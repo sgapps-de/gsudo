@@ -71,7 +71,7 @@ namespace gsudo.Helpers
             */
         }
 
-        private IList<string> ElevationCommand(string vn, string def, string sn)
+        private IList<string> ShellElevationCommand(string vn, string def, string sn)
 
         {
             string cs = Environment.GetEnvironmentVariable(vn);
@@ -133,7 +133,7 @@ namespace gsudo.Helpers
                 {
                     if (isShellElevation)
                     {
-                        var seCmd = ElevationCommand("GSUDO_PWSH_ELEVATION", null, _currentShellFileName);
+                        var seCmd = ShellElevationCommand("GSUDO_PWSH_ELEVATION", null, _currentShellFileName);
                         if (seCmd != null) return seCmd;
                     }
 
@@ -197,7 +197,7 @@ namespace gsudo.Helpers
                 else if (_currentShell == Shell.Yori)
                 {
                     if (isShellElevation)
-                        return ElevationCommand("GSUDO_YORI_ELEVATION", "*", _currentShellFileName);
+                        return ShellElevationCommand("GSUDO_YORI_ELEVATION", "*", _currentShellFileName);
                     else
                         return new[] { _currentShellFileName, keepShellOpen ? "-k" : "-c" }
                             .Concat(args).ToArray();
@@ -221,7 +221,7 @@ namespace gsudo.Helpers
                 else if (_currentShell == Shell.Bash)
                 {
                     if (isShellElevation)
-                        return ElevationCommand("GSUDO_BASH_ELEVATION", "*", _currentShellFileName);
+                        return ShellElevationCommand("GSUDO_BASH_ELEVATION", "*", _currentShellFileName);
                     else
                         return new[] { _currentShellFileName, "-c",
                             $"\"{ String.Join(" ", args).ReplaceOrdinal("\"", "\\\"") }\"" };
@@ -229,7 +229,7 @@ namespace gsudo.Helpers
                 else if (_currentShell == Shell.BusyBox)
                 {
                     if (isShellElevation)
-                        return ElevationCommand("GSUDO_BUSYBOX_ELEVATION", "* sh", _currentShellFileName);
+                        return ShellElevationCommand("GSUDO_BUSYBOX_ELEVATION", "* sh", _currentShellFileName);
                     else
                         return new[] { _currentShellFileName, "sh", "-c",
                             $"\"{ String.Join(" ", args).ReplaceOrdinal("\"", "\\\"") }\"" };
@@ -237,7 +237,7 @@ namespace gsudo.Helpers
                 else if (_currentShell == Shell.TakeCommand)
                 {
                     if (isShellElevation)
-                        return ElevationCommand("GSUDO_TAKE_ELEVATION", "* /k", _currentShellFileName);
+                        return ShellElevationCommand("GSUDO_TAKE_ELEVATION", "* /k", _currentShellFileName);
                     else
                         return new[] { _currentShellFileName, cmd_c }
                             .Concat(args).ToArray();
@@ -245,7 +245,7 @@ namespace gsudo.Helpers
                 else if (_currentShell == Shell.NuShell)
                 {
                     if (isShellElevation)
-                        return ElevationCommand("GSUDO_NUSHELL_ELEVATION", "*", _currentShellFileName);
+                        return ShellElevationCommand("GSUDO_NUSHELL_ELEVATION", "*", _currentShellFileName);
                     else
                         return new[] { _currentShellFileName, keepShellOpen ? "-e" : "-c",
                                 $"\"{ String.Join(" ", args).ReplaceOrdinal("\\", "\\\\").ReplaceOrdinal("\"", "\"\"")}\"" };
@@ -261,7 +261,7 @@ namespace gsudo.Helpers
 
             if (isShellElevation)
             {
-                return ElevationCommand("GSUDO_CMD_ELEVATION", "* /k", _currentShellFileName);
+                return ShellElevationCommand("GSUDO_CMD_ELEVATION", "* /k", _currentShellFileName);
             }
             else
             {
